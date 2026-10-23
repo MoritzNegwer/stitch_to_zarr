@@ -9,6 +9,7 @@ Why would you want to use this?
 
 <img width="1285" height="968" alt="image" src="https://github.com/user-attachments/assets/0703cafa-b120-472d-8c47-9bea5630c4bc" />
 
+
 How it works: 
 - Stitch the tiled images (per z-plane, using Fiji's "Stitch Grid Collection" plugin) in parallel
 - These tiles are then masked to get rid of the information on the outside of the sample (we don't need 16-bit information when it only records sensor noise)
@@ -19,16 +20,17 @@ How it works:
 
 Installation: 
 1) In a new python environment, make sure you have the following python packages installed:
+```
    conda create -n stitch_to_zarr
    conda install -c conda-forge numpy argparse json os re shutil tempfile time math zarr imagej scyjava pathlib itertools skimage dask
-
-2) Clone this repository
+```
+3) Clone this repository
+```
    git clone https://github.com/MoritzNegwer/stitch_to_zarr
-
-3) Make sure you have Fiji installed 
+```
+5) Make sure you have Fiji installed 
 
 Use: 
-
 1) Use Fiji's "Stitch Collection of Grid Images" plugin to generate a TileConfiguration_{zzz}.txt.registered file. Refer to e.g. Figure 5 in the DeepMACT handbook (https://www.discotechnologies.org/DeepMACT/DeepMACT_handbook.pdf) or here for detailed instructions: https://docs.google.com/document/d/1qGpMfJhVyiD46Y55UdF4ELgxd7LcQ8RvSel_lkFrAFQ/edit?usp=sharing
 
 2) Open the stitched image, make sure the overlap is acceptable and there are no tiles missing. Then, determine the threshold by which you can reliably differentiate the empty space around your sample from the sample's background intensity, e.g. using Fiji's "Set Threshold" tool. For our samples, the empty space has a pixel intensity around 100 (thermal noise of the sensor) and background intensity in the 488nm channel is ca. 500. Therefore, setting a threshold of 300 reliably cuts out the empty space and preserves the sample.
