@@ -68,6 +68,7 @@ Caveats/Todos:
 - Currently only tested on Linux. Need to verify it also works on Windows and HPC cluster environments. 
 - This script is built on parallel access to files on a disk, and will presumably be quite slow when reading/writing to the same hard disk. We recommend writing to a separate disk (ideally an SSD) as this will massively speed up processing.
 - This script currently omits the first z-plane of the stack, as our microscope's OME-TIFF output contains metadata for the entire stack there, which causes Fiji to try and load the entire dataset into RAM at once when we only want to stitch the first z-plane. Possible solutions: a) Rename the first files to .tiff (omitting the .ome prefix) to deactivate the metadata-dependent stack loading in Fiji, b) reimplement stitching in Python.
+- The prototyping of the script was done with the help of ChatGPT, but all performance-critical parts have been rewritten by hand because the LLM kept messing up the chunking/sharding and tried to parallelize at the wrong level. OME-Zarr seems to be niche enough that it's not all that well represented in the training data. 
 
 Acknowledgements: 
 - A lot of the prototyping work on this script has been done by Jeske Enzerink as part of her master internship. Thanks!
