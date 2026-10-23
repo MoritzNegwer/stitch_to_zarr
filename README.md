@@ -1,6 +1,14 @@
 # stitch_to_zarr
 Stitch tiled microscope images to a compressed OME-Zarr file, using parallel processing as much as possible. Written for multi-channel 3D light-sheet microscope images of mouse brains, it should work for other 3D image types with some adaptations. 
 
+Why would you want to use this? 
+- Efficiently stitches large tiled stacks of microscope images to a single, multilevel, OME-Zarr
+- Space savings: Initial uncompressed 4-channel, 3x3 tiled image with 900 z-planes: 400 GB raw Tiffs. After stitching, masking & compression: 67 GB.\
+- Parallelized workflow: An ancient middle-class laptop (6 years old, 12 cores, 64GB RAM) can run the script on an entire 400 GB image stack in 2h 45 minutes. 
+- Multilevel OME-Zarr can be efficiently viewed with e.g. Napari, even on old laptops:
+
+<img width="1285" height="968" alt="image" src="https://github.com/user-attachments/assets/0703cafa-b120-472d-8c47-9bea5630c4bc" />
+
 How it works: 
 - Stitch the tiled images (per z-plane, using Fiji's "Stitch Grid Collection" plugin) in parallel
 - These tiles are then masked to get rid of the information on the outside of the sample (we don't need 16-bit information when it only records sensor noise)
