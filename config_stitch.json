@@ -1,0 +1,46 @@
+{
+  "fiji_dir": "/home/wirrbel/Fiji.app/",
+  "java_heap": "64g",
+  "execution_method": "dask", 
+  "num_workers": 12,
+  "start_plane": 1,
+  "stop_plane": 925,
+  "tile_config": "/media/wirrbel/MN_6/2026-07-17_I12_Ehmt1_batch_2/260813_I12_E0033_488-WFA_560-TH_640-Iba1_750-NucSpot_12-18-23/TileConfiguration_{zzz}.txt.registered",
+
+  "validate_only": false,
+  "voxel_size": [
+    6.0,    
+    1.62,
+    1.62
+  ],
+  "chunk_shape": [
+    16,    
+    64,
+    64
+  ],
+  "channels": [
+    {
+      "name": "C00_WFA",
+      "channel_number": "C00",
+      "threshold": 300,
+      "zarr_output": "/home/wirrbel/2026-09-28_jeske_stack_to_chunk_merge/I10_E0033_test/I10_E0033_C00_WFA-488"
+    },
+    {
+      "name": "C01_TH",
+      "channel_number": "C01",
+      "zarr_output": "/home/wirrbel/2026-09-28_jeske_stack_to_chunk_merge/I10_E0033_test/I10_E0033_C01_TH-560"
+    },
+    {
+      "name": "C02_Iba1",
+      "channel_number": "C02",
+      "zarr_output": "/home/wirrbel/2026-09-28_jeske_stack_to_chunk_merge/I10_E0033_test/I10_E0033_C02_Iba1-640"
+    },
+    {
+      "name": "C03_NucSpot",
+      "channel_number": "C03",
+      "zarr_output": "/home/wirrbel/2026-09-28_jeske_stack_to_chunk_merge/I10_E0033_test/I10_E0033_C03_NucSpot-750"
+    }
+  ],
+  "compute_overlap": false,
+  "threshold_reference_channel": "C00_WFA"
+}
