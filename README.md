@@ -52,7 +52,7 @@ Per channel, adapt the following:
 ```      
       python3 ./stitch_to_zarr.py ./config_stitch.json > ./stitch_to_zarr_log.txt
 ```
-You can use e.g. Napari to view the output images, using the OME-Zarr folder viewer plugin. 
+You can use e.g. Napari to view the output images, using the napari-ome-zarr plugin.
 
 Caveats/Todos:
 - Currently only tested on Linux. Need to verify it also works on Windows and HPC cluster environments. 
