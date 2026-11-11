@@ -158,8 +158,8 @@ def save_intensity_summary(results, channel):
     minima = [float(low) for _, low, _ in results if np.isfinite(low)]
     percentiles = [float(high) for _, _, high in results if np.isfinite(high)]
     summary = {
-        'local_min': min(minima) if minima else None,
-        'local_95': max(percentiles) if percentiles else None,
+        'global_min': min(minima) if minima else None,
+        'global_max': max(percentiles) if percentiles else None,
     }
 
     #write out to a per-channel intensity.json file 
@@ -316,13 +316,14 @@ def downsample_channel(config, channel):
     log('Completed: ' + channel['zarr_output'])
 
 
-def channel_layout(template, channel_number):
+def channel_layout(template, channel_number, config):
     """Reuse the C00 layout coordinates with this channel's image filenames."""
+    stitch_reference_channel = config["stitch_reference_channel"]
     if not re.fullmatch(r'C\d{2}', channel_number):
         raise ValueError('channel_number must be a channel ID such as C00 or C01')
-    layout, count = re.subn(r'C03(?!\d)', channel_number, template)
+    layout, count = re.subn(stitch_reference_channel, channel_number, template)
     if count == 0:
-        raise ValueError('Shared tile configuration must contain C00 references')
+        raise ValueError(f'Shared tile configuration must contain {stitch_reference_channel} references')
     return layout
 
 
@@ -425,7 +426,7 @@ def stitch_channel(config, channel):
 
     #gather tile config information 
     tile_config = Path(config['tile_config'])
-    template = channel_layout(tile_config.read_text(), channel['channel_number'])
+    template = channel_layout(tile_config.read_text(), channel['channel_number'], config)
     layout_dir = tile_config.parent
 
     #get start and stop planes 
