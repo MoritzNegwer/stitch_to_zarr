@@ -243,7 +243,7 @@ def rechunk_channel(config, channel):
     
 
 
-def _downsample_block(source_path, target_path, start, shards, source_shape):
+def _downsample_block(source_path, target_path, start, shards, source_shape, target_shape):
     """Downsample a single block of the source array into the target array.
     Note that the downsampling keeps the max value (not mean), 
     so this is best used for display purposes only and not for analysis.
@@ -254,10 +254,9 @@ def _downsample_block(source_path, target_path, start, shards, source_shape):
     target = zarr.open_array(target_path, mode='a')
 
     #downsample by this much in z/y/x
-    factors = (1, 2, 2)
+    factors = tuple((s // t) for s, t in zip(source_shape, target_shape))
 
     #calculate shape for the downsampled array
-    target_shape = tuple((n + f - 1) // f for n, f in zip(source_shape, factors))
     end_target = tuple(min(s + c, n) for s, c, n in zip(start, shards, target_shape))
     source_slice = tuple(slice(s * f, min(e * f, n))
                          for s, e, n, f in zip(start, end_target, source_shape, factors))
@@ -312,7 +311,7 @@ def downsample_channel(config, channel):
         #gather arguments for parallel downsampling 
         args = []
         for start in starts:
-            args.append((source_path, target_path, start, shards, source.shape))
+            args.append((source_path, target_path, start, shards, source.shape, shape))
 
         #downsample one shard at a time 
         downsample_tasks = [delayed(_downsample_block)(*arg) for arg in args]
