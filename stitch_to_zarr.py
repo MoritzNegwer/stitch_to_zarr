@@ -109,8 +109,8 @@ def create_groups (config, channel, pixels=None):
     
     #first, use a single z-plane as chunk. Rechunk to smaller 3D blocks later 
     zplane_chunks = (1,
-        chunks[1] * math.ceil(pixels.shape[1] / chunks[1]),
-        chunks[2] * math.ceil(pixels.shape[2] / chunks[2]))
+        chunks[1] * math.ceil(pixels.shape[0] / chunks[1]),
+        chunks[2] * math.ceil(pixels.shape[1] / chunks[2]))
 
     #padding logic for the z-axis: Z-thickness must be a multiple of chunks[0]
     padded_z_extent = chunks[0] * math.ceil((config['stop_plane'] - config['start_plane']) / chunks[0])

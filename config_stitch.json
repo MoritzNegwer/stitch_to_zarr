@@ -42,5 +42,6 @@
     }
   ],
   "compute_overlap": false,
-  "threshold_reference_channel": "C00_WFA"
+  "threshold_reference_channel": "C00_WFA",
+  "stitch_reference_channel": "C03"
 }
