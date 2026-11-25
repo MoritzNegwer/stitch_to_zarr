@@ -109,8 +109,8 @@ def create_groups (config, channel, pixels=None):
     
     #first, use a single z-plane as chunk. Rechunk to smaller 3D blocks later 
     zplane_chunks = (1,
-        chunks[1] * math.ceil(pixels.shape[0] / chunks[1]),
-        chunks[2] * math.ceil(pixels.shape[1] / chunks[2]))
+        chunks[1] * math.ceil(pixels.shape[1] / chunks[1]),
+        chunks[2] * math.ceil(pixels.shape[2] / chunks[2]))
 
     #padding logic for the z-axis: Z-thickness must be a multiple of chunks[0]
     padded_z_extent = chunks[0] * math.ceil((config['stop_plane'] - config['start_plane']) / chunks[0])
@@ -244,7 +244,10 @@ def rechunk_channel(config, channel):
 
 
 def _downsample_block(source_path, target_path, start, shards, source_shape):
-    """Downsample a single block of the source array into the target array."""
+    """Downsample a single block of the source array into the target array.
+    Note that the downsampling keeps the max value (not mean), 
+    so this is best used for display purposes only and not for analysis.
+    """
 
     #open arrays 
     source = zarr.open_array(source_path, mode='r')
@@ -286,7 +289,12 @@ def downsample_channel(config, channel):
     #create new level 
     for level in (1, 2):
         source = group[str(level - 1)]
-        shape = (source.shape[0], (source.shape[1] + 1)//2, (source.shape[2] + 1)//2)
+        #downsample to roughly 6 µm/voxel in first level, 12µm/voxel on second level for better displayability. 
+        #TODO: this is hardcoded right now, need to make this dependent on the voxel size from the config_stitch.json
+        if level == 1:
+            shape = (source.shape[0], (source.shape[1] + 1)//4, (source.shape[2] + 1)//4)
+        else:
+            shape = ((source.shape[0] + 1)//2, (source.shape[1] + 1)//2, (source.shape[2] + 1)//2)
         target = group.create_array(
             str(level), 
             shape=shape, 
