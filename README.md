@@ -18,6 +18,9 @@ How it works:
 - While processing, also keep track of minimum and maximum intensity values, those are saved in a separate file and can be used for e.g. normalization for deep learning. 
 - Downsample for easier 3D viewing in e.g. Napari
 
+<img width="2480" height="1483" alt="processing_scheme_v01" src="https://github.com/user-attachments/assets/3d8ee456-c8be-436a-b738-63afe133571c" />
+
+
 Installation: 
 1) In a new python environment, make sure you have the following python packages installed:
 ```
